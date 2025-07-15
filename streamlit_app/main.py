@@ -2,27 +2,45 @@ import streamlit as st
 import os
 import sys
 
-# Allow import of modules from the parent directory
+# Add parent directory to path so we can import tool modules
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 from pages import buyer_tool, contact_tool
 
+# Streamlit page setup
 st.set_page_config(page_title="Founders Advisors - Internal Tools", layout="wide")
 
-# Custom CSS for professional layout
+# Custom styles and full title bar with Home button
 st.markdown("""
 <style>
     body {
         background-color: white;
     }
     .title-bar {
-        background-color: #3E5064;  /* Updated brand color */
+        background-color: #3E5064;
         color: white;
-        text-align: center;
-        padding: 30px 20px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 30px;
         border-radius: 8px;
-        font-size: 36px;
-        font-weight: bold;
         margin-bottom: 20px;
+    }
+    .title-left {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+    .home-link {
+        background-color: white;
+        color: #3E5064;
+        font-size: 22px;
+        padding: 10px 16px;
+        border-radius: 8px;
+        text-decoration: none;
+        font-weight: bold;
+    }
+    .home-link:hover {
+        background-color: #f0f0f0;
     }
     .description-box {
         background-color: white;
@@ -57,10 +75,14 @@ st.markdown("""
         background-color: #cbd5e1;
     }
 </style>
-""", unsafe_allow_html=True)
 
-# Title header
-st.markdown('<div class="title-bar">Founders Advisors – Internal Tools</div>', unsafe_allow_html=True)
+<div class="title-bar">
+    <div class="title-left">
+        <a class="home-link" href="/" target="_self">🏠</a>
+        <div style="font-size: 28px; font-weight: bold;">Founders Advisors – Internal Tools</div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
 # Static description box
 st.markdown("""
@@ -69,18 +91,18 @@ This internal toolkit provides deal professionals with intelligent tools to supp
 </div>
 """, unsafe_allow_html=True)
 
-# Tool 1 – Buyer Recommendation Tool
+# Buyer Recommendation Tool section
 st.markdown('<div class="tool-row">', unsafe_allow_html=True)
 col1, col2 = st.columns([1, 4])
 with col1:
     if st.button("Buyer Tool", key="buyer_button"):
         buyer_tool.run()
 with col2:
-    st.markdown("### Buyer Recommendation")
+    st.markdown("###  Buyer Recommendation")
     st.write("Input a new M&A target and receive suggested buyers based on past outreach and internal deal history.")
 st.markdown('</div>', unsafe_allow_html=True)
 
-# Tool 2 – Contact Info Lookup Tool
+# Contact Lookup Tool section
 st.markdown('<div class="tool-row">', unsafe_allow_html=True)
 col1, col2 = st.columns([1, 4])
 with col1:
@@ -88,7 +110,11 @@ with col1:
         contact_tool.run()
 with col2:
     st.markdown("###  Contact Info Lookup")
-    st.write("Find decision-maker contact details using their name, title, and company across web and internal sources.")
+    st.write("Find decision-maker contact details using the person’s name, title, and company across web and internal sources.")
 st.markdown('</div>', unsafe_allow_html=True)
+
+
+
+
 
 
