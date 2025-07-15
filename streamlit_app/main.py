@@ -1,14 +1,25 @@
+import sys
+import os
 import streamlit as st
-import pandas as pd
-from backend.vector_search import find_similar_buyers
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
-st.title("Buyer Recommendation Tool")
+from pages import buyer_tool, contact_tool
 
-st.sidebar.title("New Target Input")
-description = st.sidebar.text_area("Target Description")
-industry = st.sidebar.text_input("Industry")
 
-if st.sidebar.button("Find Buyers"):
-    buyers = find_similar_buyers(description, industry)
-    st.subheader("Recommended Buyers")
-    st.dataframe(buyers)
+
+st.set_page_config(page_title="M&A Toolkit", layout="wide")
+st.title("🔎 M&A Research Toolkit")
+
+# Sidebar menu
+st.sidebar.title("Menu")
+selected_tool = st.sidebar.selectbox("Choose a tool", [
+    "Buyer Recommendation",
+    "Contact Info Lookup"
+])
+
+# Route to selected tool
+if selected_tool == "Buyer Recommendation":
+    buyer_tool.run()
+
+elif selected_tool == "Contact Info Lookup":
+    contact_tool.run()
