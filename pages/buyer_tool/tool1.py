@@ -4,11 +4,7 @@ import sys
 import os
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 
-from backend.embed_model import embed
 from backend.vector_search import recommend_buyers
-
-
-
 
 def run(go_home_callback):
     # Header
@@ -24,17 +20,14 @@ def run(go_home_callback):
     if st.button("Back to Home"):
         go_home_callback()
 
-   
-
-
-    # Centered tool description under header
+    # Tool description box
     st.markdown("""
         <div style="background-color:white; border:1px solid #ccc; border-radius:8px; padding:20px; margin: 20px auto; text-align: center; max-width: 1000px;">
             This tool allows you to input a new M&A target and receive recommended buyers from our internal deal history, based on similarity in description, industry, and past engagement.
         </div>
     """, unsafe_allow_html=True)
 
-    # Horizontal Inputs (3 columns)
+    # Form input section
     with st.form("target_form"):
         col1, col2, col3 = st.columns(3)
         with col1:
@@ -46,10 +39,10 @@ def run(go_home_callback):
         
         submitted = st.form_submit_button("Find Recommended Buyers")
 
-    # Processing
-        if submitted and target_desc:
-          query_text = f"{target_name}. {target_desc}. Industry: {target_industry}"
-          top_buyers = recommend_buyers(query_text)
+    # Processing outside the form
+    if submitted and target_desc:
+        query_text = f"{target_name}. {target_desc}. Industry: {target_industry}"
+        top_buyers = recommend_buyers(query_text)
 
         if top_buyers:
             st.subheader("📋 Recommended Buyer List")
@@ -57,7 +50,6 @@ def run(go_home_callback):
             df.columns = ["Buyer Name", "Engagement Score", "Description"]
             st.dataframe(df, use_container_width=True)
 
-            # Optional: allow download
             csv = df.to_csv(index=False)
             st.download_button("📥 Download as CSV", csv, "recommended_buyers.csv", "text/csv")
         else:
