@@ -1,0 +1,1 @@
+I work for an M&A advisor and this is an attempt to create an ai assisted vector search that will be able to sort through past deal data and give me a reccomended buyers list for a current target based off that data
