@@ -1,46 +1,55 @@
 import pandas as pd
+import numpy as np
+import faiss
+from backend.embed_model import embed
+
+
 
 def load_target_data():
-    # Simulate loading some fake deal and buyer data
-    targets_df = pd.DataFrame({
-        "deal_id": [1, 2],
-        "description": ["AI company in healthcare", "Cloud logistics platform"]
-    })
-
-    embeddings = [[0.0] * 384, [0.0] * 384]  # Dummy vectors
-
-    deal_to_buyers = {
-        1: ["Alpha Partners", "Beta Capital"],
-        2: ["Gamma Ventures"]
-    }
-
-    buyer_meta = {
-        "Alpha Partners": "Private equity firm focused on tech-enabled services.",
-        "Beta Capital": "Middle-market investor in software.",
-        "Gamma Ventures": "Growth equity for logistics and mobility."
-    }
-
-    return targets_df, embeddings, deal_to_buyers, buyer_meta
-
-def search_similar_targets(query_vec, targets_df, embeddings):
-    # Just return all rows for now
+    # Load the metadata for embedded targets
+    metadata_path = "vector_store/target_metadata.csv"
+    targets_df = pd.read_csv(metadata_path)
     return targets_df
+
+
+
+
+def search_similar_targets(query_vec, top_k=5):
+    # Load FAISS index
+    index_path = "vector_store/target_index.faiss"
+    index = faiss.read_index(index_path)
+
+
+    # Ensure query_vec is in correct shape
+    query_vec = np.array(query_vec).astype("float32")
+    if len(query_vec.shape) == 1:
+        query_vec = query_vec.reshape(1, -1)
+
+
+    # Run search
+    D, I = index.search(query_vec, top_k)
+    return I[0]  # Return list of row indices
+
+
+
+
 def recommend_buyers(query_text: str, top_k: int = 5):
-    # Load index and metadata
-    index = faiss.read_index("vector_store/target_index.faiss")
-    target_df = pd.read_csv("vector_store/target_metadata.csv")
+    # Embed the query
+    query_vec = embed([query_text])[0]
+
+
+    # Load target metadata and buyer info
+    targets_df = load_target_data()
     outreach_df = pd.read_csv("data/outreach.csv")
     buyers_df = pd.read_csv("data/buyers.csv")
 
-    # Embed the input target
-    query_vec = embed([query_text])
-    query_vec = np.array(query_vec).astype("float32")
 
-    # Search FAISS for similar past targets
-    D, I = index.search(query_vec, top_k)
-    matched_deals = target_df.iloc[I[0]]["deal_id"].tolist()
+    # Search similar past targets
+    matched_indices = search_similar_targets(query_vec, top_k=top_k)
+    matched_deals = targets_df.iloc[matched_indices]["deal_id"].tolist()
 
-    # Count buyer engagements
+
+    # Score buyers based on engagement across matched deals
     buyer_scores = {}
     for deal_id in matched_deals:
         engaged = outreach_df[
@@ -50,18 +59,22 @@ def recommend_buyers(query_text: str, top_k: int = 5):
         for buyer_id in engaged["buyer_id"]:
             buyer_scores[buyer_id] = buyer_scores.get(buyer_id, 0) + 1
 
-    # Merge scores with buyer profiles
+
+    # Merge with buyer metadata
     buyer_profiles = buyers_df.set_index("buyer_id").to_dict("index")
-    scored_buyers = []
+    ranked_buyers = []
     for buyer_id, score in sorted(buyer_scores.items(), key=lambda x: -x[1]):
         if buyer_id in buyer_profiles:
-            bp = buyer_profiles[buyer_id]
-            scored_buyers.append({
-                "buyer_id": buyer_id,
-                "buyer_name": bp["buyer_name"],
+            profile = buyer_profiles[buyer_id]
+            ranked_buyers.append({
+                "buyer_name": profile["buyer_name"],
                 "score": score,
-                "description": f"{bp['buyer_type']} focused on {bp['focus_area']} ({bp['website']})"
+                "description": f"{profile['buyer_type']} focused on {profile['focus_area']} ({profile['website']})"
             })
 
-    return scored_buyers
+
+    return ranked_buyers
+
+
+
 
