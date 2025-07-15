@@ -5,7 +5,7 @@ from backend.embeddings import embed
 from backend.vector_search import load_target_data, search_similar_targets
 
 def run():
-    st.markdown("<h1 style='color:#3E5064;'>🧠 Buyer Recommendation Tool</h1>", unsafe_allow_html=True)
+    st.markdown("<h1 style='color:#3E5064;'> Buyer Recommendation Tool</h1>", unsafe_allow_html=True)
 
     st.markdown('<div style="background-color:white; border:1px solid #ccc; border-radius:8px; padding:20px; margin-bottom:30px;">'
                 'Use this tool to input a new M&A target and receive recommended buyers based on similarity to past internal deals. '

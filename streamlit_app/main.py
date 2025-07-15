@@ -4,7 +4,8 @@ import sys
 
 # Add parent directory to path so we can import tool modules
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
-from pages import buyer_tool, contact_tool
+from pages.buyer_tool import tool1
+from pages.contact_tool import tool2
 
 # Streamlit page setup
 st.set_page_config(page_title="Founders Advisors - Internal Tools", layout="wide")
@@ -96,7 +97,7 @@ st.markdown('<div class="tool-row">', unsafe_allow_html=True)
 col1, col2 = st.columns([1, 4])
 with col1:
     if st.button("Buyer Tool", key="buyer_button"):
-        buyer_tool.run()
+        tool1.run()
 with col2:
     st.markdown("###  Buyer Recommendation")
     st.write("Input a new M&A target and receive suggested buyers based on past outreach and internal deal history.")
@@ -107,7 +108,7 @@ st.markdown('<div class="tool-row">', unsafe_allow_html=True)
 col1, col2 = st.columns([1, 4])
 with col1:
     if st.button("Contact Tool", key="contact_button"):
-        contact_tool.run()
+        tool2.run()
 with col2:
     st.markdown("###  Contact Info Lookup")
     st.write("Find decision-maker contact details using the person’s name, title, and company across web and internal sources.")
