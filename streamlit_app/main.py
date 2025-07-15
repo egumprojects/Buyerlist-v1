@@ -7,15 +7,15 @@ if "current_page" not in st.session_state:
 # Navigation actions
 def go_home():
     st.session_state["current_page"] = "home"
-    st.experimental_rerun()
+    
 
 def go_buyer_tool():
     st.session_state["current_page"] = "buyer_tool"
-    st.experimental_rerun()
+    
 
 def go_contact_tool():
     st.session_state["current_page"] = "contact_tool"
-    st.experimental_rerun()
+   
 
 # Top Header (Shared)
 def render_header(title_text):
@@ -46,7 +46,7 @@ def show_homepage_ui():
         if st.button("Buyer Tool"):
             go_buyer_tool()
     with col2:
-        st.subheader("🧠 Buyer Recommendation")
+        st.subheader(" Buyer Recommendation")
         st.caption("Input a new M&A target and receive suggested buyers based on past outreach and internal deal history.")
     st.markdown('</div>', unsafe_allow_html=True)
 

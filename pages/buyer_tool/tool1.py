@@ -3,19 +3,21 @@ from backend.embeddings import embed
 from backend.vector_search import load_target_data, search_similar_targets
 
 
-def run():
-    # Top Title Bar with Home Button and Title
+def run(go_home_callback):
+    # Header
     st.markdown("""
         <div style="background-color:#3E5064; padding: 20px 30px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between;">
-            <a href="/" style="text-decoration: none; color: white; font-size: 24px;">🏠</a>
-            <h1 style="color: white; margin: 0 auto; font-size: 26px;">Buyer List Tool</h1>
+            <button onclick="window.location.href='/'" style="font-size: 20px; background: none; border: none; color: white; cursor: pointer;">🏠</button>
+            <h1 style="color: white; margin: 0 auto;">Buyer List Tool</h1>
             <div></div>
         </div>
     """, unsafe_allow_html=True)
-    
-    if st.button("🏠 Home", key="home_button"):
-      st.session_state["current_page"] = "home"
-      st.experimental_rerun()
+
+    # Manual Home Button fallback
+    if st.button("Back to Home"):
+        go_home_callback()
+
+   
 
 
     # Centered tool description under header
