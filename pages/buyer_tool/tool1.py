@@ -12,6 +12,11 @@ def run():
             <div></div>
         </div>
     """, unsafe_allow_html=True)
+    
+    if st.button("🏠 Home", key="home_button"):
+      st.session_state["current_page"] = "home"
+      st.experimental_rerun()
+
 
     # Centered tool description under header
     st.markdown("""

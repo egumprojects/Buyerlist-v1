@@ -28,21 +28,22 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# Home Page UI
-if st.session_state.current_page == "home":
-    col1, col2 = st.columns([1, 4])
+#  Page UI Navigation
+if "current_page" not in st.session_state:
+    st.session_state["current_page"] = "home"
 
-    with col1:
-        if st.button("Buyer Tool"):
-            st.session_state.current_page = "buyer_tool"
+if st.session_state["current_page"] == "home":
+    from pages import home
+    home.run()
 
-    with col2:
-        st.markdown("#### Buyer Recommendation")
-        st.caption("Input a new M&A target and receive suggested buyers based on past outreach and internal deal history.")
-
-# Buyer Tool UI
-elif st.session_state.current_page == "buyer_tool":
+elif st.session_state["current_page"] == "buyer_tool":
+    from pages.buyer_tool import tool1
     tool1.run()
+
+elif st.session_state["current_page"] == "contact_tool":
+    from pages.contact_tool import tool2
+    tool2.run()
+
 
 
 
