@@ -1,0 +1,3 @@
+deal_id,buyer_id,status,notes
+D001,B001,engaged,Requested CIM
+D001,B002,pass,Too small
