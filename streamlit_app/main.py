@@ -76,7 +76,7 @@ with col1:
     if st.button("Buyer Tool", key="buyer_button"):
         buyer_tool.run()
 with col2:
-    st.markdown("### 🧠 Buyer Recommendation")
+    st.markdown("### Buyer Recommendation")
     st.write("Input a new M&A target and receive suggested buyers based on past outreach and internal deal history.")
 st.markdown('</div>', unsafe_allow_html=True)
 
@@ -87,7 +87,7 @@ with col1:
     if st.button("Contact Tool", key="contact_button"):
         contact_tool.run()
 with col2:
-    st.markdown("### 📬 Contact Info Lookup")
+    st.markdown("###  Contact Info Lookup")
     st.write("Find decision-maker contact details using their name, title, and company across web and internal sources.")
 st.markdown('</div>', unsafe_allow_html=True)
 

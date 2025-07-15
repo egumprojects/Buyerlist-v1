@@ -1,7 +1,7 @@
 import streamlit as st
 
 def run():
-    st.header("📬 Contact Info Lookup")
+    st.header(" Contact Info Lookup")
 
     name = st.text_input("Name")
     company = st.text_input("Company")
