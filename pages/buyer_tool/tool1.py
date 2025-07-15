@@ -1,6 +1,7 @@
+import pandas as pd
 import streamlit as st
-from backend.embeddings import embed
-from backend.vector_search import load_target_data, search_similar_targets
+from backend.embed_model import embed
+from backend.vector_search import recommend_buyers
 
 
 def run(go_home_callback):
@@ -40,31 +41,22 @@ def run(go_home_callback):
         submitted = st.form_submit_button("Find Recommended Buyers")
 
     # Processing
-    if submitted and target_desc:
-        query_text = f"{target_name}. {target_desc}. Industry: {target_industry}"
-        query_vec = embed([query_text])
-        targets_df, embeddings, deal_to_buyers, buyer_meta = load_target_data()
-        top_targets = search_similar_targets(query_vec, targets_df, embeddings)
+        if submitted and target_desc:
+          query_text = f"{target_name}. {target_desc}. Industry: {target_industry}"
+        top_buyers = recommend_buyers(query_text)
 
-        buyer_scores = {}
-        for deal_id in top_targets["deal_id"]:
-            for buyer in deal_to_buyers.get(deal_id, []):
-                buyer_scores[buyer] = buyer_scores.get(buyer, 0) + 1
+        if top_buyers:
+            st.subheader("📋 Recommended Buyer List")
+            df = pd.DataFrame(top_buyers)[["buyer_name", "score", "description"]]
+            df.columns = ["Buyer Name", "Engagement Score", "Description"]
+            st.dataframe(df, use_container_width=True)
 
-        if buyer_scores:
-            sorted_buyers = sorted(buyer_scores.items(), key=lambda x: -x[1])
-            st.subheader("🔍 Top Recommended Buyers")
-            for buyer, score in sorted_buyers[:10]:
-                description = buyer_meta.get(buyer, "No profile available")
-                st.markdown(f"""
-                    <div style="border:1px solid #ddd; border-radius:8px; padding:15px; margin-bottom:15px; background-color:#f9f9f9;">
-                        <strong>{buyer}</strong><br>
-                        <em>Engagement Score: {score}</em><br>
-                        <span style="font-size:14px; color:#444;">{description}</span>
-                    </div>
-                """, unsafe_allow_html=True)
+            # Optional: allow download
+            csv = df.to_csv(index=False)
+            st.download_button("📥 Download as CSV", csv, "recommended_buyers.csv", "text/csv")
         else:
-            st.warning("No matching buyers found.")
+            st.warning("No recommended buyers found.")
+
 
 
 
