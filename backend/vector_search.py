@@ -1,7 +1,13 @@
 import pandas as pd
 import numpy as np
 import faiss
+
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+
 from backend.embed_model import embed
+
 
 
 
@@ -35,7 +41,9 @@ def search_similar_targets(query_vec, top_k=5):
 
 def recommend_buyers(query_text: str, top_k: int = 5):
     # Embed the query
-    query_vec = embed([query_text])[0]
+    query_vec = embed([query_text])
+    matched_indices = search_similar_targets(query_vec,top_k=top_k)
+
 
 
     # Load target metadata and buyer info
@@ -72,9 +80,8 @@ def recommend_buyers(query_text: str, top_k: int = 5):
                 "description": f"{profile['buyer_type']} focused on {profile['focus_area']} ({profile['website']})"
             })
 
-
+    print("Matched deals:",matched_deals)
+    print("Buyer scores",buyer_scores)
     return ranked_buyers
-
-
 
 
