@@ -1,27 +1,27 @@
 import pandas as pd
-import numpy as np
-import faiss
-from backend.embeddings import embed
 
 def load_target_data():
-    df = pd.read_csv("data/targets.csv")
-    buyers = pd.read_csv("data/outreach.csv")
+    # Simulate loading some fake deal and buyer data
+    targets_df = pd.DataFrame({
+        "deal_id": [1, 2],
+        "description": ["AI company in healthcare", "Cloud logistics platform"]
+    })
 
-    # Embedding cache or re-embed
-    vectors = embed(df["description"].tolist())
+    embeddings = [[0.0] * 384, [0.0] * 384]  # Dummy vectors
 
-    # Build FAISS index
-    index = faiss.IndexFlatL2(vectors.shape[1])
-    index.add(np.array(vectors))
+    deal_to_buyers = {
+        1: ["Alpha Partners", "Beta Capital"],
+        2: ["Gamma Ventures"]
+    }
 
-    # Map deal_id → list of buyers who engaged
-    deal_to_buyers = {}
-    for _, row in buyers.iterrows():
-        if row["status"].lower() == "engaged":
-            deal_to_buyers.setdefault(row["deal_id"], []).append(row["buyer_name"])
+    buyer_meta = {
+        "Alpha Partners": "Private equity firm focused on tech-enabled services.",
+        "Beta Capital": "Middle-market investor in software.",
+        "Gamma Ventures": "Growth equity for logistics and mobility."
+    }
 
-    return df, vectors, deal_to_buyers
+    return targets_df, embeddings, deal_to_buyers, buyer_meta
 
-def search_similar_targets(query_vector, df, vector_store, k=5):
-    D, I = vector_store.search(query_vector, k)
-    return df.iloc[I[0]]
+def search_similar_targets(query_vec, targets_df, embeddings):
+    # Just return all rows for now
+    return targets_df

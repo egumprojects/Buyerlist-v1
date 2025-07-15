@@ -1,6 +1,3 @@
-from sentence_transformers import SentenceTransformer
-
-model = SentenceTransformer('all-MiniLM-L6-v2')
-
-def embed(texts):
-    return model.encode(texts, show_progress_bar=False)
+def embed(text_list):
+    # Dummy embedding function for POC
+    return [[0.0] * 384 for _ in text_list]  # Example: return zero vectors
