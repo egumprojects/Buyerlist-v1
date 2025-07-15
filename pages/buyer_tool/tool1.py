@@ -1,7 +1,13 @@
 import pandas as pd
 import streamlit as st
+import sys
+import os
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
+
 from backend.embed_model import embed
 from backend.vector_search import recommend_buyers
+
+
 
 
 def run(go_home_callback):
@@ -43,7 +49,7 @@ def run(go_home_callback):
     # Processing
         if submitted and target_desc:
           query_text = f"{target_name}. {target_desc}. Industry: {target_industry}"
-        top_buyers = recommend_buyers(query_text)
+          top_buyers = recommend_buyers(query_text)
 
         if top_buyers:
             st.subheader("📋 Recommended Buyer List")
