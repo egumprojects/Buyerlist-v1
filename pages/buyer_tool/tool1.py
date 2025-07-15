@@ -1,10 +1,10 @@
 import streamlit as st
-import pandas as pd
 from backend.embeddings import embed
 from backend.vector_search import load_target_data, search_similar_targets
 
+
 def run():
-    # Header
+    # Top Title Bar with Home Button and Title
     st.markdown("""
         <div style="background-color:#3E5064; padding: 20px 30px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between;">
             <a href="/" style="text-decoration: none; color: white; font-size: 24px;">🏠</a>
@@ -13,14 +13,14 @@ def run():
         </div>
     """, unsafe_allow_html=True)
 
-    # Description box
+    # Centered tool description under header
     st.markdown("""
         <div style="background-color:white; border:1px solid #ccc; border-radius:8px; padding:20px; margin: 20px auto; text-align: center; max-width: 1000px;">
-            This tool allows you to enter a new M&A target and receive recommended buyers from our internal deal history, based on similarity in description, industry, and past engagement.
+            This tool allows you to input a new M&A target and receive recommended buyers from our internal deal history, based on similarity in description, industry, and past engagement.
         </div>
     """, unsafe_allow_html=True)
 
-    # Input layout: horizontal
+    # Horizontal Inputs (3 columns)
     with st.form("target_form"):
         col1, col2, col3 = st.columns(3)
         with col1:
@@ -32,7 +32,7 @@ def run():
         
         submitted = st.form_submit_button("Find Recommended Buyers")
 
-    # Run logic
+    # Processing
     if submitted and target_desc:
         query_text = f"{target_name}. {target_desc}. Industry: {target_industry}"
         query_vec = embed([query_text])
@@ -58,6 +58,7 @@ def run():
                 """, unsafe_allow_html=True)
         else:
             st.warning("No matching buyers found.")
+
 
 
 
