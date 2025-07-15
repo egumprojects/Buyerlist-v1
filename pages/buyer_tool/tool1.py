@@ -4,25 +4,25 @@ from backend.embeddings import embed
 from backend.vector_search import load_target_data, search_similar_targets
 
 def run():
+    # Header
     st.markdown("""
         <div style="background-color:#3E5064; padding: 20px 30px; border-radius: 8px; display: flex; align-items: center; justify-content: space-between;">
-            <a href="/" style="text-decoration: none; color: white;">
-                <span style="font-size: 24px;">🏠</span>
-            </a>
-            <h1 style="color: white; margin: 0 auto; font-size: 26px;">Buyer Recommendation Tool</h1>
+            <a href="/" style="text-decoration: none; color: white; font-size: 24px;">🏠</a>
+            <h1 style="color: white; margin: 0 auto; font-size: 26px;">Buyer List Tool</h1>
             <div></div>
         </div>
     """, unsafe_allow_html=True)
 
+    # Description box
     st.markdown("""
         <div style="background-color:white; border:1px solid #ccc; border-radius:8px; padding:20px; margin: 20px auto; text-align: center; max-width: 1000px;">
-            Use this tool to input a new M&A target and receive recommended buyers based on similarity to past internal deals.
-            Recommendations are based on engagement history, industry, and textual similarity.
+            This tool allows you to enter a new M&A target and receive recommended buyers from our internal deal history, based on similarity in description, industry, and past engagement.
         </div>
     """, unsafe_allow_html=True)
 
+    # Input layout: horizontal
     with st.form("target_form"):
-        col1, col2, col3 = st.columns([1, 2, 1])
+        col1, col2, col3 = st.columns(3)
         with col1:
             target_name = st.text_input("Target Company Name")
         with col2:
@@ -32,6 +32,7 @@ def run():
         
         submitted = st.form_submit_button("Find Recommended Buyers")
 
+    # Run logic
     if submitted and target_desc:
         query_text = f"{target_name}. {target_desc}. Industry: {target_industry}"
         query_vec = embed([query_text])
@@ -57,6 +58,9 @@ def run():
                 """, unsafe_allow_html=True)
         else:
             st.warning("No matching buyers found.")
+
+
+
 
 
 
