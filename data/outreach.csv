@@ -1,3 +1,13 @@
 deal_id,buyer_id,status,notes
 D001,B001,engaged,Requested CIM
 D001,B002,pass,Too small
+D001,B003,engaged,Requested CIM
+D002,B005,engaged,Requested CIM
+D002,B001,pass,Outside fund scope
+D003,B006,engaged,Requested CIM
+D003,B001,pass,Outside fund scope
+D004,B003,engaged,Interested in logistics
+D004,B008,engaged,Requested CIM
+D005,B002,engaged,Requested CIM
+D005,B009,engaged,Tech interest
+D005,B010,pass,Too niche

@@ -1,4 +1,6 @@
 deal_id,target_name,description,industry
-D001,EnviroClean,Sanitation for food plants,Sanitation
-D002,ThermoTrack,Temperature sensors for pharma,Logistics
+D001,EnviroClean,Sanitation for food plants,Consumer
+D002,ThermoTrack,Temperature sensors for pharma,Technology
 D003,AquaFlow,Water treatment services,Industrial
+D004,LogistiSoft,Cloud-based logistics software,Technology
+D005,PureFlow Systems,Water filtration equipment for commercial buildings,Industrial

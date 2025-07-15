@@ -1,3 +1,11 @@
 buyer_id,buyer_name,buyer_type,focus_area,website
 B001,Blue Ridge PE,Financial,Industrials,blueridgepe.com
 B002,AquaTech Corp,Strategic,Water systems,aquatech.com
+B003,Industrial Capital,Financial,Industrials,industrialcap.com
+B004,Pharma Corp,Strategic,Pharma manufacturing,pharmacorp.com
+B005,Enviro,Strategic,Environmental sanitation,enviro.com
+B006,WaterComs,Strategic,Water systems,watercoms.com
+B007,GreenField Capital,Financial,Waste and water,greenfield.com
+B008,LogiCorp,Strategic,Supply chain software,logicorp.com
+B009,ClearWater Group,Strategic,Filtration tech,clearwater.com
+B010,Sanitech Partners,Financial,Sanitation and health,sanitech.com
